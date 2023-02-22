@@ -59,10 +59,10 @@ const handleMotion = (event) => {
 };
 
 const handleOrientation = (event) => {
-    output.innerHTML(JSON.stringify({
+    output.innerHTML = JSON.stringify({
         x: event.gamma,
         y: event.beta
-    }, null, 2));
+    }, null, 2);
 };
 
 reqGyro.addEventListener("click", () => {
