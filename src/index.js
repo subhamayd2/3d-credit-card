@@ -60,8 +60,8 @@ const handleMotion = (event) => {
 
 const handleOrientation = (event) => {
     output.innerHTML = JSON.stringify({
-        x: event.gamma,
-        y: event.beta
+        x: clamp(event.gamma, -45, 45),
+        y: clamp(event.beta, -45, 45)
     }, null, 2);
 };
 
