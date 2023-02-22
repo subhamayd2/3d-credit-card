@@ -50,19 +50,26 @@ const clamp = (num, min = -1, max = 1) => {
     return num;
 };
 
-document.addEventListener("mousemove", (e) => {
+const handleMouseMove = (e) => {
     updateAngle(e.clientX, e.clientY);
-});
+}
 
-const handleMotion = (event) => {
-    console.log(event);
-};
+document.addEventListener("mousemove", handleMouseMove);
 
 const handleOrientation = (event) => {
-    output.innerHTML = JSON.stringify({
-        x: clamp(event.gamma, -45, 45),
-        y: clamp(event.beta, -45, 45)
-    }, null, 2);
+    const minmax = 25;
+    const x = clamp(event.gamma, -minmax, minmax)
+    const y = clamp(event.beta, -minmax, minmax)
+
+    card.style.setProperty("--x", -1 * x * minmax + "deg");
+    card.style.setProperty("--y", y * minmax + "deg");
+
+    const moveX = clamp(x / minmax);
+
+    cardGlare.style.transform =
+        "translateZ(1px) translateX(" +
+        -1 * cardWrapper.offsetWidth * moveX +
+        "px)";
 };
 
 reqGyro.addEventListener("click", () => {
@@ -76,6 +83,8 @@ reqGyro.addEventListener("click", () => {
                 // Add a listener to get smartphone orientation
                 // in the alpha-beta-gamma axes (units in degrees)
                 window.addEventListener("deviceorientation", handleOrientation);
+                // remove mouse move event
+                document.removeEventListener("mousemove", handleMouseMove);
             }
         });
     } else {
@@ -86,4 +95,6 @@ reqGyro.addEventListener("click", () => {
 stopGyro.addEventListener("click", () => {
     // window.removeEventListener("devicemotion", handleMotion);
     window.removeEventListener("deviceorientation", handleOrientation);
+    // restore mouse move event
+    document.addEventListener("mousemove", handleMouseMove);
 });
