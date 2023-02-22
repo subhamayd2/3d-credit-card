@@ -6,6 +6,7 @@ const cardGlare = card.querySelector(".card_glare");
 
 const reqGyro = document.getElementById("req_gyro");
 const stopGyro = document.getElementById("stop_gyro");
+const output = document.getElementById("output");
 
 const updateAngle = (mX, mY) => {
     const cardMidX = cardWrapper.offsetWidth / 2;
@@ -58,10 +59,10 @@ const handleMotion = (event) => {
 };
 
 const handleOrientation = (event) => {
-    console.log({
+    output.innerHTML(JSON.stringify({
         x: event.gamma,
         y: event.beta
-    });
+    }, null, 2));
 };
 
 reqGyro.addEventListener("click", () => {
