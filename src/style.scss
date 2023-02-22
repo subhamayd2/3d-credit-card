@@ -1,0 +1,223 @@
+@use "sass:color";
+
+$font-display: "Audiowide", display;
+$font-other: "Anek Bangla", Sans-Serif;
+$depth: 20;
+$width: 3.375in;
+$height: 2.125in;
+$radius: 8px;
+$scale: 2;
+
+@mixin bg() {
+  background: rgb(30, 0, 36);
+  background: linear-gradient(
+    130deg,
+    rgba(30, 0, 36, 1) 0%,
+    rgba(16, 19, 153, 1) 59%,
+    rgba(0, 185, 255, 1) 100%
+  );
+}
+
+html,
+body {
+  font-family: $font-display;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.card {
+  width: $width;
+  height: $height;
+  position: relative;
+  @include bg;
+  border-radius: $radius;
+  padding: 16px 24px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  --x: 0;
+  --y: 0;
+  transform-style: preserve-3d;
+  transition: transform 100ms linear;
+  transform: perspective(5000px) rotateX(var(--x)) rotateY(var(--y));
+
+  & * {
+    z-index: 1;
+  }
+
+  &::after {
+    content: "";
+    transform: translateZ(-#{$depth}px);
+    position: absolute;
+    inset: -1em;
+    @include bg;
+    opacity: 0.5;
+    filter: blur(25px);
+    border-radius: $radius;
+  }
+
+  &::before {
+    content: "";
+    transform: translateZ(-#{$depth - 1}px);
+    position: absolute;
+    inset: 0;
+    background-color: black;
+    opacity: 0.5;
+    filter: blur(5px);
+    border-radius: $radius;
+  }
+
+  .card_texture {
+    position: absolute;
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8"%3E%3Cg fill="%239C92AC" fill-opacity="0.4"%3E%3Cpath fill-rule="evenodd" d="M0 0h4v4H0V0zm4 4h4v4H4V4z"/%3E%3C/g%3E%3C/svg%3E');
+    inset: 0;
+    background-size: 3px;
+    background-repeat: repeat;
+    background-blend-mode: multiply;
+    border-radius: $radius;
+  }
+
+  .card_content {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 2;
+    border-radius: $radius;
+  }
+
+  .card_glare {
+    position: absolute;
+    background: linear-gradient(to right, transparent, rgba(#fff, $alpha: 0.5));
+    width: 50px;
+    top: 0;
+    bottom: 0;
+    filter: blur(20px);
+    transform: translateZ(1px) translateX(-100px);
+    background-blend-mode: multiply;
+    border-radius: $radius;
+    z-index: 2;
+  }
+
+  .card_border_highlight {
+    position: absolute;
+    border-radius: $radius;
+    inset: 0;
+    background-color: white;
+    opacity: 0.7;
+    transform: translateZ(-1px);
+  }
+
+  & *[contenteditable] {
+    transition: background-color 100ms ease;
+    z-index: 2;
+
+    &:hover {
+      background-color: rgba(#000000, $alpha: 0.5);
+    }
+  }
+
+  .card_title {
+    user-select: none;
+    font-family: $font-other;
+    font-weight: bold;
+    font-size: 100%;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .card_type {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+
+    .card_emv {
+      background-color: #db9130;
+      border-radius: 3px;
+    }
+
+    .card_user_class {
+      user-select: none;
+      font-family: $font-other;
+      font-weight: 600;
+    }
+  }
+
+  .card_number {
+    font-size: 1.1em;
+    letter-spacing: 2px;
+  }
+
+  .card_validity {
+    font-family: $font-other;
+    display: flex;
+    gap: 24px;
+    font-size: 0.6em;
+    font-weight: 600;
+
+    .card_validity_info {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+
+      span:first-child {
+        user-select: none;
+        line-height: 1;
+      }
+      span:last-child {
+        font-family: $font-other;
+        font-weight: 400;
+        font-size: 1.2rem;
+        line-height: 1;
+      }
+    }
+  }
+
+  .card_user_name {
+    font-family: $font-other;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+}
+
+.card .card_international {
+  user-select: none;
+  position: absolute;
+  left: 4px;
+  transform: rotate(-180deg);
+  writing-mode: tb-rl;
+  bottom: 16px;
+  font-size: 0.65em;
+}
+
+.buttons {
+  position: fixed;
+  inset: 10px 10px auto auto;
+
+  & button {
+    background: #33225f;
+    padding: 0.5em 0.75em;
+    color: white;
+    font-size: 14px;
+    border-radius: 0.25em;
+    border: none;
+    transition: all 200ms;
+
+    &:hover {
+      background: color.scale($color: #33225f, $lightness: 20%);
+    }
+
+    &:active {
+      background: color.scale($color: #33225f, $blackness: 20%);
+    }
+  }
+}
