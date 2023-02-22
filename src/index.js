@@ -61,8 +61,8 @@ const handleOrientation = (event) => {
     const x = clamp(event.gamma, -minmax, minmax)
     const y = clamp(event.beta, -minmax, minmax)
 
-    card.style.setProperty("--x", -1 * y * minmax + "deg");
-    card.style.setProperty("--y", x * minmax + "deg");
+    card.style.setProperty("--x", -1 * y + "deg");
+    card.style.setProperty("--y", x + "deg");
 
     const moveX = clamp(x / minmax);
 
